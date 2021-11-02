@@ -1,0 +1,17 @@
+.my-footer {
+    height: 5em;
+    background-color: grey;
+    margin-top: 2em;
+    padding: 1em;
+}
+.datepicker {
+    z-index: 10000;
+}
+
+.suites-image {
+    width: 50%;
+}
+
+.double-image {
+    width: 50%;
+}

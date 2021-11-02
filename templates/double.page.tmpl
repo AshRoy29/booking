@@ -1,0 +1,56 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+                <img src="/static/images/double-rooms.jpg" class="img-fluid mx-auto d-block img-thumbnail double-image" alt="Double rooms image">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mt-4">Double Rooms</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat praesentium accusamus nostrum sit aliquam odio quae ullam natus dolore excepturi! Perferendis fuga totam debitis deleniti tenetur nemo accusantium. Mollitia, doloribus?</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center">
+                <a id="check-availability-button" href="#!" class="btn btn-success">Check Now</a>
+            </div>
+        </div>
+
+    </div>
+{{end}}
+
+{{define "js"}}
+
+
+    <script>
+        document.getElementById("check-availability-button").addEventListener("click", function () {
+            //notify("Message", "success")
+            let html = `
+        <form action="" method="post" novalidate class="needs-validation">
+                    <div class="row">
+                        <div class="col">
+                                <div class="row" id="reservation-dates-modal">
+                                    <div class="col">
+                                        <input disabled required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+                                    </div>
+                                    <div class="col">
+                                        <input disabled required class="form-control" type="text" name="end" id="end" placeholder="Departure">
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+        </form>
+        `
+            attention.custom({msg: html, title: "Chose Dates"})
+
+        })
+    </script>
+
+
+{{end}}

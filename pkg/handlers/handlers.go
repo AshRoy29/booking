@@ -7,7 +7,6 @@ import (
 	"net/http"
 )
 
-
 // Repo is the repository used by the handlers
 var Repo *Repository
 
@@ -18,8 +17,8 @@ type Repository struct {
 
 // NewRepo creates a new repository
 func NewRepo(a *config.AppConfig) *Repository {
-	return &Repository {
-		App : a,
+	return &Repository{
+		App: a,
 	}
 }
 
@@ -28,14 +27,14 @@ func NewHandlers(r *Repository) {
 	Repo = r
 }
 
-func (m *Repository) Home(w http.ResponseWriter, r *http.Request){
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 
 	render.RenderTemplates(w, "home.page.tmpl", &models.TemplateData{})
 }
 
-func (m *Repository) About(w http.ResponseWriter, r *http.Request){
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 	stringMap := make(map[string]string)
 	stringMap["test"] = "OLA"
@@ -46,4 +45,20 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request){
 	render.RenderTemplates(w, "about.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
 	})
+}
+
+func (m *Repository) Suites(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplates(w, "suites.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) Double(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplates(w, "double.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) Book(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplates(w, "book.page.tmpl", &models.TemplateData{})
+}
+
+func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplates(w, "contact.page.tmpl", &models.TemplateData{})
 }
