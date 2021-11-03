@@ -20,6 +20,9 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/suites", handlers.Repo.Suites)
 	mux.Get("/double", handlers.Repo.Double)
 
+	mux.Get("/make-reservation", handlers.Repo.Reservation)
+	mux.Post("/make-reservation", handlers.Repo.PostReservation)
+
 	mux.Get("/book", handlers.Repo.Book)
 	mux.Post("/book", handlers.Repo.PostBook)
 	mux.Post("/book-json", handlers.Repo.BookJSON)
