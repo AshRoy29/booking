@@ -3,17 +3,16 @@ package render
 import (
 	"bytes"
 	"fmt"
-	"github.com/AshRoy29/booking/pkg/config"
-	"github.com/AshRoy29/booking/pkg/models"
+	"github.com/AshRoy29/booking/internal/config"
+	"github.com/AshRoy29/booking/internal/models"
+	"github.com/justinas/nosurf"
 	"log"
 	"net/http"
 	"path/filepath"
 	"text/template"
 )
 
-var functions = template.FuncMap{
-
-}
+var functions = template.FuncMap{}
 
 var app *config.AppConfig
 
@@ -22,7 +21,12 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func RenderTemplates(w http.ResponseWriter, tmpl string, td *models.TemplateData){
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
+	return td
+}
+
+func RenderTemplates(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 
 	var tc map[string]*template.Template
 
@@ -39,9 +43,13 @@ func RenderTemplates(w http.ResponseWriter, tmpl string, td *models.TemplateData
 
 	buf := new(bytes.Buffer)
 
-	_ = t.Execute(buf, td)
+	td = AddDefaultData(td, r)
 
-	_, err := buf.WriteTo(w)
+	err := t.Execute(buf, td)
+	if err != nil {
+		log.Println(err)
+	}
+	_, err = buf.WriteTo(w)
 	if err != nil {
 		fmt.Println("Error", err)
 	}

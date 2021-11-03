@@ -32,7 +32,7 @@
     document.getElementById("check-availability-button").addEventListener("click", function () {
         //notify("Message", "success")
         let html = `
-        <form action="" method="post" novalidate class="needs-validation">
+        <form id="book-now-form" action="" method="post" novalidate class="needs-validation">
                     <div class="row">
                         <div class="col">
                                 <div class="row" id="reservation-dates-modal">
@@ -47,7 +47,42 @@
                     </div>
         </form>
         `
-        attention.custom({msg: html, title: "Chose Dates"})
+        attention.custom({
+            msg: html,
+            title: "Chose Dates",
+
+            willOpen: () => {
+                const elem = document.getElementById('reservation-dates-modal');
+                const rangepicker = new DateRangePicker(elem, {
+                    // ...options
+                    showOnFocus: true,
+                })
+            },
+
+            didOpen: () => {
+                document.getElementById('start').removeAttribute('disabled');
+                document.getElementById('end').removeAttribute('disabled');
+            },
+
+            callback: function(result) {
+                console.log("called");
+
+                let form = document.getElementById("book-now-form");
+                let formData = new FormData(form);
+                formData.append("csrf_token", "{{.CSRFToken}}");
+
+                fetch('/book-json', {
+                    method: "post",
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        console.log(data.ok);
+                        console.log(data.message);
+                    })
+            }
+        })
 
     })
 </script>

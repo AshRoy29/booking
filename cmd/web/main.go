@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/AshRoy29/booking/pkg/config"
-	"github.com/AshRoy29/booking/pkg/handlers"
-	"github.com/AshRoy29/booking/pkg/render"
+	"github.com/AshRoy29/booking/internal/config"
+	"github.com/AshRoy29/booking/internal/handlers"
+	"github.com/AshRoy29/booking/internal/render"
 	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
@@ -12,6 +12,7 @@ import (
 )
 
 const portNumber = ":8080"
+
 var app config.AppConfig
 var session *scs.SessionManager
 
@@ -42,7 +43,7 @@ func main() {
 	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
 
 	srv := &http.Server{
-		Addr: portNumber,
+		Addr:    portNumber,
 		Handler: routes(&app),
 	}
 

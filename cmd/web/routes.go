@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/AshRoy29/booking/pkg/config"
-	"github.com/AshRoy29/booking/pkg/handlers"
+	"github.com/AshRoy29/booking/internal/config"
+	"github.com/AshRoy29/booking/internal/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
@@ -19,7 +19,11 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/about", handlers.Repo.About)
 	mux.Get("/suites", handlers.Repo.Suites)
 	mux.Get("/double", handlers.Repo.Double)
+
 	mux.Get("/book", handlers.Repo.Book)
+	mux.Post("/book", handlers.Repo.PostBook)
+	mux.Post("/book-json", handlers.Repo.BookJSON)
+
 	mux.Get("/contact", handlers.Repo.Contact)
 
 	fileServer := http.FileServer(http.Dir("./static/"))
