@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/AshRoy29/booking/internal/config"
+	"github.com/AshRoy29/booking/internal/driver"
 	"github.com/AshRoy29/booking/internal/forms"
 	"github.com/AshRoy29/booking/internal/helpers"
 	"github.com/AshRoy29/booking/internal/models"
 	"github.com/AshRoy29/booking/internal/render"
+	"github.com/AshRoy29/booking/internal/repository"
+	"github.com/AshRoy29/booking/internal/repository/dbrepo"
 	"net/http"
 )
 
@@ -17,12 +20,14 @@ var Repo *Repository
 // Repository is the type repository
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
@@ -32,26 +37,26 @@ func NewHandlers(r *Repository) {
 }
 
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, r, "home.page.tmpl", &models.TemplateData{})
+	render.Templates(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, r, "about.page.tmpl", &models.TemplateData{})
+	render.Templates(w, r, "about.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) Suites(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, r, "suites.page.tmpl", &models.TemplateData{})
+	render.Templates(w, r, "suites.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) Double(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, r, "double.page.tmpl", &models.TemplateData{})
+	render.Templates(w, r, "double.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	var emptyReservation models.Reservation
 	data := make(map[string]interface{})
 	data["reservation"] = emptyReservation
-	render.RenderTemplates(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+	render.Templates(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
 		Data: data,
 	})
@@ -81,7 +86,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
 
-		render.RenderTemplates(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		render.Templates(w, r, "make-reservation.page.tmpl", &models.TemplateData{
 			Form: form,
 			Data: data,
 		})
@@ -94,7 +99,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) Book(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, r, "book.page.tmpl", &models.TemplateData{})
+	render.Templates(w, r, "book.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) PostBook(w http.ResponseWriter, r *http.Request) {
@@ -124,7 +129,7 @@ func (m *Repository) BookJSON(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplates(w, r, "contact.page.tmpl", &models.TemplateData{})
+	render.Templates(w, r, "contact.page.tmpl", &models.TemplateData{})
 }
 
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
@@ -140,7 +145,7 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	data := make(map[string]interface{})
 	data["reservation"] = reservation
 
-	render.RenderTemplates(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+	render.Templates(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
 }
